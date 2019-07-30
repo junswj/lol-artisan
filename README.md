@@ -91,12 +91,8 @@ Request URL is saved as a string format and API key, which requires regeneration
 ```python
 # APIKEY and URL for Challenger, Grand Master
 APIKEY=''
-iron_URL='https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/IRON/IV?page=1&api_key='+APIKEY
-bronze_URL='https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/BRONZE/I?page=1&api_key='+APIKEY
-silver_URL='https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/SILVER/II?page=1&api_key='+APIKEY
-gold_URL='https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/GOLD/IV?page=1&api_key='+APIKEY
-plat_URL='https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/PLATINUM/IV?page=1&api_key='+APIKEY
-dia_URL='https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/DIAMOND/IV?page=1&api_key='+APIKEY
+URL='https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/(Tier + Division + APIKEY)'
+
 ```
 
 # Merging Datasets
