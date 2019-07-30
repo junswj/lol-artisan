@@ -371,8 +371,7 @@ He is exhausted and needs the persuading power to make him keep going. He decide
 ```python
 #calculate p-value
 prob_equal_or_more_extreme = 1 - binomial.cdf(gold_player_win)
-print("p-value: {:2.2}".format(
-    prob_equal_or_more_extreme))
+print("p-value: {:2.2}".format(prob_equal_or_more_extreme))
 ```
 
     p-value: 0.024
