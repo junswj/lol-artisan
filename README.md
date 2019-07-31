@@ -89,7 +89,7 @@ Request URL is saved as a string format and API key, which requires regeneration
 
 
 ```python
-# APIKEY and URL for Challenger, Grand Master
+# APIKEY and URL from iron to diamond
 APIKEY=''
 URL='https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/(Tier + Division + APIKEY)'
 
