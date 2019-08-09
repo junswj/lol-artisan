@@ -77,8 +77,8 @@ def get_api_info_division(URL):
     """
     sleep(1)  # sleep functions is used to prevent exceeding request limit. 
     
-    response=requests.get(URL)  # requesting information using API KEY.
-    df=json_normalize(response.json()) #Received data format is .json, so it requires the normalization
+    response = requests.get(URL)  # requesting information using API KEY.
+    df = json_normalize(response.json()) #Received data format is .json, so it requires the normalization
     
     return df
 ```
@@ -107,7 +107,7 @@ URL_list = [iron_URL, bronze_URL, silver_URL, gold_URL, plat_URL, dia_URL]
 #tier_dfs: list of actual DataFrames.
 #tier_name: list of DataFrame names, string type.
 tier_dfs=[]
-tier_names=['IRON','BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND']
+tier_names=['IRON', 'BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND']
 
 #Looping to generate list of Dataframes according to each tier
 for i in URL_list:
@@ -145,7 +145,7 @@ Concatanating DataFrames using pd.concat and displaying column information:
 
 
 ```python
-df=pd.concat(tier_dfs,axis=0, sort=False) #concatenating DataFrames
+df = pd.concat(tier_dfs, axis=0, sort=False) #concatenating DataFrames
 df.info()
 ```
     <class 'pandas.core.frame.DataFrame'>
@@ -179,8 +179,8 @@ Dropping the unnecessary columns and saving the dataframe as .csv
 df.drop(['miniSeries.losses','miniSeries.progress','miniSeries.target','miniSeries.wins', 'leagueId','summonerId','queueType'],axis=1, inplace=True)
 
 #importing datetime function
-date=datetime.datetime.now()
-ymd=str(date.year)+str(date.month)+str(date.day) #+'_'+str(date.hour)
+date = datetime.datetime.now()
+ymd = str(date.year)+str(date.month)+str(date.day) #+'_'+str(date.hour)
 
 #Saving the Data with .csv form for SQL storage     
 df.to_csv('./data/lol_data_{}.csv'.format(ymd), index=False)
@@ -238,28 +238,28 @@ pd.plotting.scatter_matrix(df[['freshBlood', 'hotStreak', 'leaguePoints', 'losse
 tier_type = CategoricalDtype(categories=tier_names, ordered=True)
 
 #grouped by tier and average number of games played per player in the current season
-df['total_games']=df.wins+df.losses
-df_veteran=df[['total_games', 'tier']][df.veteran].groupby('tier').mean().reset_index()
-df_freshBlood=df[['total_games', 'tier']][df.freshBlood].groupby('tier').mean().reset_index()
-df_Normal=df[['total_games', 'tier']][~df.veteran&~df.freshBlood].groupby('tier').mean().reset_index()
+df['total_games'] = df.wins+df.losses
+df_veteran = df[['total_games', 'tier']][df.veteran].groupby('tier').mean().reset_index()
+df_freshBlood = df[['total_games', 'tier']][df.freshBlood].groupby('tier').mean().reset_index()
+df_Normal = df[['total_games', 'tier']][~df.veteran&~df.freshBlood].groupby('tier').mean().reset_index()
 
 #Assigning order on the tier groups
-df_veteran['tier']=df_veteran['tier'].astype(tier_type)
-df_freshBlood['tier']=df_veteran['tier'].astype(tier_type)
-df_Normal['tier']=df_veteran['tier'].astype(tier_type)
+df_veteran['tier'] = df_veteran['tier'].astype(tier_type)
+df_freshBlood['tier'] = df_veteran['tier'].astype(tier_type)
+df_Normal['tier'] = df_veteran['tier'].astype(tier_type)
 
 #setting a tier as an index
-df_veteran=df_veteran.sort_values('tier').set_index('tier')
-df_freshBlood=df_freshBlood.sort_values('tier').set_index('tier')
-df_normal=df_Normal.sort_values('tier').set_index('tier')
+df_veteran = df_veteran.sort_values('tier').set_index('tier')
+df_freshBlood = df_freshBlood.sort_values('tier').set_index('tier')
+df_normal = df_Normal.sort_values('tier').set_index('tier')
 
 #column name changed to veteran, freshBlood and normal
-df_veteran.columns=['veteran']
-df_freshBlood.columns=['freshBlood']
-df_normal.columns=['normal']
+df_veteran.columns = ['veteran']
+df_freshBlood.columns = ['freshBlood']
+df_normal.columns = ['normal']
 
 #each column merged for the plotting
-dfplot=pd.concat([df_veteran, df_freshBlood, df_normal], axis=1)
+dfplot = pd.concat([df_veteran, df_freshBlood, df_normal], axis=1)
 ```
 
 # Plotting and Analysis
@@ -268,7 +268,7 @@ Average Number of Games Played per player in each Tier is shown below. In broad 
 
 
 ```python
-axs=dfplot.plot.bar(figsize=(12,7), fontsize= 25)
+axs = dfplot.plot.bar(figsize=(12,7), fontsize= 25)
 
 # Set title & y-label
 axs.set_title('Average Number of Games Played per player in each Tier', fontsize=20)
@@ -302,12 +302,12 @@ What will be a factor that decides your status? Yes, win rate (number of wins / 
 
 ```python
 #winrate column added and grouped by tier
-df['winrate']=df.wins/df.total_games
-gt_mean=df.groupby('tier').mean().reset_index()
-gt_mean['tier']=gt_mean['tier'].astype(tier_type)
-gt_mean=gt_mean.sort_values('tier')
+df['winrate'] = df.wins/df.total_games
+gt_mean = df.groupby('tier').mean().reset_index()
+gt_mean['tier'] = gt_mean['tier'].astype(tier_type)
+gt_mean = gt_mean.sort_values('tier')
 
-fig, axs=plt.subplots(1,figsize=(12,7))
+fig, axs = plt.subplots(1,figsize=(12,7))
 axs.bar(gt_mean.tier,gt_mean.winrate)
 
 # Set title & y-label
@@ -335,7 +335,7 @@ Matt is gold tier player with 223 win stats from 386 total games. He already pla
 
 
 ```python
-gold_mean=df[df.tier=='GOLD'].winrate.mean()
+gold_mean = df[df.tier=='GOLD'].winrate.mean()
 print('Winrate of gold tier : {:2.2f} (win/total games)'.format(gold_mean))
 ```
 
@@ -356,7 +356,7 @@ gold_player_win=223
 
 
 ```python
-binomial=stats.binom(gold_player_tot, gold_mean)
+binomial = stats.binom(gold_player_tot, gold_mean)
 ```
 
 He is exhausted and needs the persuading power to make him keep going. He decided to set pretty straightforward rejection threshold, 5%
@@ -402,14 +402,14 @@ For the clear visualization, binomial distribution is drawn as above, and red ar
 
 
 ```python
-fig, axs=plt.subplots(1,figsize=(7,7))
+fig, axs = plt.subplots(1,figsize=(7,7))
 #plotting losses vs. wins
 axs.scatter(df.losses, df.wins, alpha=.5, c ='blue')
 
 #linear fitting using numpy function
 a, b = np.polyfit(df.losses,df.wins,1)
-linefit=[a*i +b for i in df.losses]
-plt.plot(df.losses,linefit, c='r')
+linefit = [a*i +b for i in df.losses]
+plt.plot(df.losses, linefit, c='r')
 
 #print slope and intercept
 print("Slope of line: {:2.2f}".format(a))
