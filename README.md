@@ -122,7 +122,7 @@ Let’s take a brief look on the data set. We collected 205 samples from each ti
 
 ```python
 #Counting number of summoner names in each tier dataframes.
-[(tier_names[i],k.summonerName.count())  for i,k in enumerate(tier_dfs)]
+[(tier_names[i], k.summonerName.count()) for i,k in enumerate(tier_dfs)]
 ```
 
     [('IRON', 205),
@@ -180,7 +180,7 @@ df.drop(['miniSeries.losses','miniSeries.progress','miniSeries.target','miniSeri
 
 #importing datetime function
 date = datetime.datetime.now()
-ymd = str(date.year)+str(date.month)+str(date.day) #+'_'+str(date.hour)
+ymd = str(date.year) + str(date.month) + str(date.day) #+'_'+str(date.hour)
 
 #Saving the Data with .csv form for SQL storage     
 df.to_csv('./data/lol_data_{}.csv'.format(ymd), index=False)
@@ -192,8 +192,8 @@ Heatmap displays the correlations between the features. It seems there is no ina
 
 
 ```python
-plt.subplots(1,figsize=(12,10))
-sns.heatmap(df.corr(),annot=True)
+plt.subplots(1, figsize=(12,10))
+sns.heatmap(df.corr(), annot=True)
 ```
 
 ![png](Project_Artisan_final_files/Project_Artisan_final_31_1.png)
@@ -212,8 +212,7 @@ df.inactive.sum(),df.veteran.sum(), df.freshBlood.sum(), df.hotStreak.sum()
 Scatter matrix also shows the tendency of correlation between the features. As we checked in the heatmap, Boolean categorical feature does not show strong relationship with other features. Since most of columns are consist of Booleans, it is good idea to apply mask in analyzing win rate analysis.
 
 ```python
-pd.plotting.scatter_matrix(df[['freshBlood', 'hotStreak', 'leaguePoints', 'losses',
-       'summonerName', 'tier', 'veteran', 'wins']].applymap(lambda x:x*1), alpha=0.2, figsize=(10, 10), diagonal='kde');
+pd.plotting.scatter_matrix(df[['freshBlood', 'hotStreak', 'leaguePoints', 'losses', 'summonerName', 'tier', 'veteran', 'wins']].applymap(lambda x:x*1), alpha=0.2, figsize=(10,10), diagonal='kde');
 ```
 
 
@@ -238,7 +237,7 @@ pd.plotting.scatter_matrix(df[['freshBlood', 'hotStreak', 'leaguePoints', 'losse
 tier_type = CategoricalDtype(categories=tier_names, ordered=True)
 
 #grouped by tier and average number of games played per player in the current season
-df['total_games'] = df.wins+df.losses
+df['total_games'] = df.wins + df.losses
 df_veteran = df[['total_games', 'tier']][df.veteran].groupby('tier').mean().reset_index()
 df_freshBlood = df[['total_games', 'tier']][df.freshBlood].groupby('tier').mean().reset_index()
 df_Normal = df[['total_games', 'tier']][~df.veteran&~df.freshBlood].groupby('tier').mean().reset_index()
@@ -302,7 +301,7 @@ What will be a factor that decides your status? Yes, win rate (number of wins / 
 
 ```python
 #winrate column added and grouped by tier
-df['winrate'] = df.wins/df.total_games
+df['winrate'] = df.wins / df.total_games
 gt_mean = df.groupby('tier').mean().reset_index()
 gt_mean['tier'] = gt_mean['tier'].astype(tier_type)
 gt_mean = gt_mean.sort_values('tier')
@@ -377,7 +376,7 @@ Interpreting the results, p-value shows probability of the apparent effect under
 
 
 ```python
-fig, axs = plt.subplots(1, figsize=(16, 4))
+fig, axs = plt.subplots(1, figsize=(16,4))
 #plot binomial distribution
 bars = axs.bar(range(gold_player_tot), 
               [binomial.pmf(i) for i in range(gold_player_tot)], 
